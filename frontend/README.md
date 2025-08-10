@@ -1,36 +1,130 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontend - Multi-User Chatbot
 
-## Getting Started
+This is the Next.js frontend for the multi-user chatbot application with API key authentication.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Multi-User Support**: Switch between different users (Alice, Bob, Charlie)
+- **API Key Authentication**: Each user has their own API key for secure access
+- **Real-time Messaging**: Send and receive messages with the AI assistant
+- **Persistent Conversations**: Each user maintains their own conversation thread
+- **Modern UI**: Clean, responsive interface built with Tailwind CSS
+
+## Project Structure
+
+```
+frontend/app/
+├── components/
+│   ├── UserSelector.tsx    # User selection interface
+│   └── ChatInterface.tsx   # Main chat interface
+├── types/
+│   └── index.ts           # Shared TypeScript types
+├── utils/
+│   └── api.ts             # API utility functions
+├── globals.css            # Global styles
+├── layout.tsx             # Root layout
+└── page.tsx               # Main page component
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Components
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### UserSelector
+- Fetches available users from the API
+- Displays user selection interface
+- Handles connection errors gracefully
+- Provides retry functionality
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### ChatInterface
+- Manages user authentication
+- Handles message sending and receiving
+- Displays conversation history
+- Provides user switching functionality
 
-## Learn More
+### API Utilities
+- Centralized API calls
+- Error handling with custom `ApiError` class
+- Type-safe API responses
 
-To learn more about Next.js, take a look at the following resources:
+## Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. **Set environment variables** (optional):
+   ```bash
+   # .env.local
+   API_URL=http://localhost:8000
+   ```
 
-## Deploy on Vercel
+3. **Start development server**:
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Ensure backend is running**:
+   ```bash
+   # In backend directory
+   poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Usage
+
+1. **Select a User**: Choose from Alice, Bob, or Charlie
+2. **Start Chatting**: Send messages and receive AI responses
+3. **Switch Users**: Use the "Switch User" button to change users
+4. **View History**: Each user maintains their own conversation thread
+
+## Authentication
+
+The frontend uses API key authentication:
+- **Alice**: `alice_key_123`
+- **Bob**: `bob_key_456`
+- **Charlie**: `charlie_key_789`
+
+API keys are automatically included in request headers for authenticated endpoints.
+
+## User Interface
+
+### User Selection Screen
+- Clean, card-based layout
+- User information display
+- Error handling for connection issues
+- Retry functionality
+
+### Chat Interface
+- Real-time message display
+- User identification in header
+- Message timestamps
+- Loading states and error handling
+
+## State Management
+
+Uses React hooks for state management:
+- `useState` for local component state
+- `useEffect` for side effects and API calls
+- `useRef` for DOM references (auto-scroll)
+
+## Error Handling
+
+Comprehensive error handling:
+- Network connection errors
+- API authentication failures
+- Message sending failures
+- User-friendly error messages
+- Retry mechanisms
+
+
+
+## API Integration
+
+The frontend integrates with these backend endpoints:
+- `GET /users` - Fetch available users
+- `GET /users/me` - Get current user info
+- `GET /threads/me` - Get user's conversation thread
+- `POST /messages` - Send a message
+
+All authenticated endpoints require the `X-API-Key` header.
+
+
