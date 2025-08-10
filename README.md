@@ -2,7 +2,7 @@
 
 A full-stack real-time chatbot application built with Next.js, FastAPI, and PostgreSQL, featuring multi-user support with API key authentication.
 
-## 🚀 Features
+## Features
 
 - **Multi-User Support**: Three default users (Alice, Bob, Charlie) with unique API keys
 - **API Key Authentication**: Secure authentication using API keys in request headers
@@ -15,7 +15,7 @@ A full-stack real-time chatbot application built with Next.js, FastAPI, and Post
 - **Error Handling**: Graceful error handling with user-friendly messages
 - **RESTful API**: Well-structured FastAPI backend with proper error handling
 
-## 🏗️ Architecture
+## Architecture
 
 ### Frontend (Next.js 14)
 - **State Management**: React hooks for local state
@@ -35,7 +35,7 @@ A full-stack real-time chatbot application built with Next.js, FastAPI, and Post
 - **Thread Table**: Manages conversation threads per user
 - **Message Table**: Stores all chat messages with metadata
 
-## 📊 Database Schema
+## Database Schema
 
 ```sql
 -- Users table
@@ -62,7 +62,7 @@ CREATE TABLE "message" (
 );
 ```
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 - Docker and Docker Compose
@@ -95,7 +95,7 @@ npm run dev
 - Backend API: http://localhost:8000
 - API Docs: http://localhost:8000/docs
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Public Endpoints
 - `GET /users` - Get all available users (for user selection)
@@ -157,7 +157,7 @@ X-API-Key: alice_key_123
 }
 ```
 
-## 👥 Default Users
+## Default Users
 
 The application comes with three pre-configured users:
 
@@ -167,7 +167,7 @@ The application comes with three pre-configured users:
 | Bob | `bob_key_456` | Second user with separate thread |
 | Charlie | `charlie_key_789` | Third user with separate thread |
 
-## 🎯 Implementation Details
+## Implementation Details
 
 ### Multi-User Authentication
 - **API Key System**: Each user has a unique API key for authentication
@@ -194,7 +194,7 @@ The application comes with three pre-configured users:
 - **Frontend Optimization**: React key props and efficient re-renders
 - **Type Safety**: TypeScript prevents runtime errors
 
-## 🧪 Testing the Application
+## Testing the Application
 
 1. **Start the Application**: Follow setup instructions above
 2. **Access Application**: Open http://localhost:3000
