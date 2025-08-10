@@ -12,12 +12,13 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
+    api_key: Mapped[str] = mapped_column(String(50), unique=True)
     
     # Relationships
     threads: Mapped[list["Thread"]] = relationship(back_populates="user")
 
     def __repr__(self) -> str:
-        return f"User(id={self.id!r}, name={self.name!r}"
+        return f"User(id={self.id!r}, name={self.name!r}, api_key={self.api_key!r})"
 
 
 class Thread(Base):
