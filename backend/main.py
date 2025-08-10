@@ -34,7 +34,13 @@ async def get_current_user(
                     detail="Invalid API key. Please provide a valid X-API-Key header."
                 )
             
-            return user
+            # Capture user data before session closes
+            user_id = user.id
+            user_name = user.name
+            user_api_key = user.api_key
+            
+            # Create a new User object with the captured data
+            return User(id=user_id, name=user_name, api_key=user_api_key)
 
 # Add CORS middleware
 app.add_middleware(
