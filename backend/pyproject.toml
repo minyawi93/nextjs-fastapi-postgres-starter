@@ -15,6 +15,7 @@ psycopg2-binary = "*"
 uvicorn = "*"
 jupyter = "^1.1.1"
 ipykernel = "^6.30.1"
+dotenv = "^0.9.9"
 
 
 [build-system]
