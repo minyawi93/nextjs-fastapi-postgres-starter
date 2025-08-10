@@ -47,16 +47,16 @@ npm run dev
 
 ## Features Implemented
 
-**Multi-User Support**: Three default users (Alice, Bob, Charlie) with unique API keys
-**API Key Authentication**: Secure authentication using API keys in request headers
-**User Selection Interface**: Choose which user to log in as
-**Message Threads**: Each user has a dedicated conversation thread
-**Real-time Chat**: Send messages and receive bot responses
-**Message Persistence**: All messages stored in PostgreSQL
-**Modern UI**: Clean, responsive chat interface
-**Loading States**: Visual feedback during API calls and message sending
-**Error Handling**: Graceful error handling with user-friendly messages
-**Type Safety**: Full TypeScript support with proper type definitions
+- **Multi-User Support**: Three default users (Alice, Bob, Charlie) with unique API keys
+- **API Key Authentication**: Secure authentication using API keys in request headers
+- **User Selection Interface**: Choose which user to log in as
+- **Message Threads**: Each user has a dedicated conversation thread
+- **Real-time Chat**: Send messages and receive bot responses
+- **Message Persistence**: All messages stored in PostgreSQL
+- **Modern UI**: Clean, responsive chat interface
+- **Loading States**: Visual feedback during API calls and message sending
+- **Error Handling**: Graceful error handling with user-friendly messages
+- **Type Safety**: Full TypeScript support with proper type definitions
 
 ## API Endpoints
 
