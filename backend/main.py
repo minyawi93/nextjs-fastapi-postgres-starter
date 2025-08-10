@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy import select
@@ -14,6 +14,27 @@ from typing import List, Optional
 seed_user_if_needed()
 
 app = FastAPI()
+
+
+# Authentication dependency
+async def get_current_user(
+    x_api_key: str = Header(alias="X-API-Key", description="API key for user authentication")
+) -> User:
+    async with AsyncSession(engine) as session:
+        async with session.begin():
+            # Find user by API key
+            result = await session.execute(
+                select(User).where(User.api_key == x_api_key)
+            )
+            user = result.scalar_one_or_none()
+            
+            if user is None:
+                raise HTTPException(
+                    status_code=401, 
+                    detail="Invalid API key. Please provide a valid X-API-Key header."
+                )
+            
+            return user
 
 # Add CORS middleware
 app.add_middleware(
@@ -47,36 +68,21 @@ class ThreadRead(BaseModel):
 
 
 @app.get("/users/me")
-async def get_my_user():
-    async with AsyncSession(engine) as session:
-        async with session.begin():
-            # Sample logic to simplify getting the current user. There's only one user.
-            result = await session.execute(select(User))
-            user = result.scalars().first()
-
-            if user is None:
-                raise HTTPException(status_code=404, detail="User not found")
-            return UserRead(id=user.id, name=user.name)
+async def get_my_user(current_user: User = Depends(get_current_user)):
+    return UserRead(id=current_user.id, name=current_user.name)
 
 
 @app.get("/threads/me")
-async def get_my_thread():
+async def get_my_thread(current_user: User = Depends(get_current_user)):
     async with AsyncSession(engine) as session:
-        # Get the current user
-        user_result = await session.execute(select(User))
-        user = user_result.scalars().first()
-        
-        if user is None:
-            raise HTTPException(status_code=404, detail="User not found")
-        
         # Get or create thread for the user
         thread_result = await session.execute(
-            select(Thread).where(Thread.user_id == user.id)
+            select(Thread).where(Thread.user_id == current_user.id)
         )
         thread = thread_result.scalars().first()
         
         if thread is None:
-            thread = Thread(user_id=user.id)
+            thread = Thread(user_id=current_user.id)
             session.add(thread)
             await session.commit()
         
@@ -98,23 +104,16 @@ async def get_my_thread():
 
 
 @app.post("/messages")
-async def create_message(message: MessageCreate):
+async def create_message(message: MessageCreate, current_user: User = Depends(get_current_user)):
     async with AsyncSession(engine) as session:
-        # Get the current user
-        user_result = await session.execute(select(User))
-        user = user_result.scalars().first()
-        
-        if user is None:
-            raise HTTPException(status_code=404, detail="User not found")
-        
         # Get or create thread for the user
         thread_result = await session.execute(
-            select(Thread).where(Thread.user_id == user.id)
+            select(Thread).where(Thread.user_id == current_user.id)
         )
         thread = thread_result.scalars().first()
         
         if thread is None:
-            thread = Thread(user_id=user.id)
+            thread = Thread(user_id=current_user.id)
             session.add(thread)
             await session.flush()
         
@@ -176,6 +175,23 @@ async def create_message(message: MessageCreate):
             )
         }
 
+
+@app.get("/users")
+async def list_users():
+    """List all available users and their API keys (for testing purposes)"""
+    async with AsyncSession(engine) as session:
+        async with session.begin():
+            result = await session.execute(select(User))
+            users = result.scalars().all()
+            
+            return [
+                {
+                    "id": user.id,
+                    "name": user.name,
+                    "api_key": user.api_key
+                }
+                for user in users
+            ]
 
 # @app.get("/messages/stream")
 # async def stream_messages():
