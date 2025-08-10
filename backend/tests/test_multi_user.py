@@ -7,8 +7,6 @@ import requests
 import time
 from typing import Dict, List
 
-@pytest.mark.integration
-@pytest.mark.api
 class TestMultiUserAPI:
     """Multi-user API functionality tests"""
     

@@ -6,8 +6,6 @@ import pytest
 import requests
 from typing import Dict
 
-@pytest.mark.integration
-@pytest.mark.api
 class TestBasicAPI:
     """Basic API functionality tests"""
     
