@@ -1,21 +1,24 @@
-import Image from "next/image";
+"use client";
 
-type User = {
-  id: string;
-  name: string;
-};
+import { useState } from "react";
+import UserSelector from "./components/UserSelector";
+import ChatInterface from "./components/ChatInterface";
+import { User } from "./types";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+export default function Home() {
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-export default async function Home() {
-  console.log("fetch", `${apiUrl}/users/me`);
-  const user: User = await fetch(`${apiUrl}/users/me`).then((res) =>
-    res.json()
-  );
+  const handleUserSelect = (user: User) => {
+    setSelectedUser(user);
+  };
 
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Hello, {user.name}!
-    </main>
-  );
+  const handleSwitchUser = () => {
+    setSelectedUser(null);
+  };
+
+  if (!selectedUser) {
+    return <UserSelector onUserSelect={handleUserSelect} />;
+  }
+
+  return <ChatInterface user={selectedUser} onSwitchUser={handleSwitchUser} />;
 }
