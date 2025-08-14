@@ -59,3 +59,7 @@ def seed_user_if_needed():
                         print(f"Thread created for {user.name}")
                     else:
                         print(f"Thread already exists for {user.name}")
+
+
+if __name__ == "__main__":
+    seed_user_if_needed()
